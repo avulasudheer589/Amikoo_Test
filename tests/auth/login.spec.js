@@ -9,8 +9,8 @@ const VALID_PASSWORD = process.env.TEST_PASSWORD;
 test.describe('Login', () => {
   test.beforeEach(async ({ page }) => {
     await page.context().clearCookies();
-    await page.evaluate(() => localStorage.clear());
-    await page.goto(LOGIN_URL);
+    await page.goto(LOGIN_URL);                          // navigate first
+    await page.evaluate(() => localStorage.clear());    // then clear storage
     await expect(page.locator('#email')).toBeVisible();
   });
 
