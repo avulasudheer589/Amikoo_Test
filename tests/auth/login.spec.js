@@ -5,9 +5,9 @@ test.describe('Authentication', () => {
     // Navigate to the login page
     await page.goto('https://app.idealtrendz.org/');
 
-    // Fill in credentials
-    await page.getByRole('textbox', { name: /email|phone/i }).fill('your-email@example.com');
-    await page.getByRole('textbox', { name: /password/i }).fill('your-password');
+    // Fill in credentials from environment variables
+    await page.getByRole('textbox', { name: /email|phone/i }).fill(process.env.TEST_EMAIL);
+    await page.getByRole('textbox', { name: /password/i }).fill(process.env.TEST_PASSWORD);
 
     // Submit the form
     await page.getByRole('button', { name: /sign in/i }).click();
