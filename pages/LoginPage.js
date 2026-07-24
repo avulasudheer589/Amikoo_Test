@@ -9,15 +9,11 @@ class LoginPage {
     this.emailInput    = page.getByPlaceholder('Enter email or 10-digit phone number');
     this.passwordInput = page.getByPlaceholder('Enter your password');
     this.signInButton  = page.getByRole('button', { name: 'Sign in' });
-
-    // Post-login assertion targets
-    this.welcomeMessage   = page.getByText("Welcome back! Here's what's happening today.");
-    this.dashboardHeading = page.getByText('Dashboard Overview');
   }
 
-  /** Navigate to the login page */
+  /** Navigate to the login page — app login route is /login */
   async goto() {
-    await this.page.goto('/');
+    await this.page.goto('/login');
   }
 
   /** Log in with the provided credentials */
@@ -27,10 +23,16 @@ class LoginPage {
     await this.signInButton.click();
   }
 
-  /** Assert that the dashboard is visible after a successful login */
+  /**
+   * Assert successful login.
+   * Employee accounts redirect to / after login.
+   * Waits until the URL is no longer /login (works for both employee and admin).
+   */
   async assertLoggedIn() {
-    await this.welcomeMessage.waitFor({ state: 'visible' });
-    await this.dashboardHeading.waitFor({ state: 'visible' });
+    await this.page.waitForURL(
+      url => !url.pathname.startsWith('/login'),
+      { timeout: 15000 }
+    );
   }
 }
 
